@@ -5,8 +5,8 @@ import { CreateUserRequest } from './dto/create-user.request';
 export class UsersService {
 
   createUser(data: CreateUserRequest){
-
+    console.log(data)
   }
 
-  
+
 }
