@@ -28,24 +28,33 @@ export class ProductsController {
       storage: diskStorage({
         destination: 'public/products',
         filename: (req, file, callback) => {
-          callback(null, `${req.params.productId}${extname(file.originalname)}`
+          callback(
+            null, 
+            `${req.params.productId}${extname(file.originalname)}`
           )
         }
-      })
+      }),
+      fileFilter: (req, file, callback) => {
+        if (!file.mimetype.match(/^image\/(jpeg|jpg)$/)) {
+          return callback(new Error('Only JPEG images are allowed!'), false);
+        }
+        callback(null, true);
+      }
     })
   )
   uploadProductImage(
     @UploadedFile(
       new ParseFilePipe({
         validators: [
-          new MaxFileSizeValidator({ maxSize: 50000 }), 
+          new MaxFileSizeValidator({ maxSize: 500000 }), 
           new FileTypeValidator({ fileType: 'image/jpeg' })
-        ]
+        ],
+        errorHttpStatusCode: 400
       })
     )
     _file: Express.Multer.File,
   ){
-    
+    return { message: 'Image uploaded successfully' };
   }
 
   @Get()
