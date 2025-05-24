@@ -59,7 +59,7 @@ export class ProductsController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   async getProducts(
     @CurrentUser() user: TokenPayload
   ){
