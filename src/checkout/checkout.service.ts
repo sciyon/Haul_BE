@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Post } from '@nestjs/common';
 import Stripe from 'stripe';
 import { ProductsService } from 'src/products/products.service';
 import { ConfigService } from '@nestjs/config';
@@ -15,6 +15,9 @@ export class CheckoutService {
   async createSession(productId: number) {
     const product = await this.productService.getProduct(productId);
     return this.stripe.checkout.sessions.create({
+      metadata: {
+        productId
+      },
       line_items: [
         {
           price_data:{
@@ -29,10 +32,29 @@ export class CheckoutService {
         }
       ],
       mode: 'payment',
+      payment_method_types: ['card'],
       success_url: this.configService.getOrThrow('STRIPE_SUCCESS_URL'),
       cancel_url: this.configService.getOrThrow('STRIPE_CANCEL_URL'),
     })
   }
 
+  @Post('webhook')
+  async handleCheckoutWebhook(event: any) {
+    if(event.type  !== 'checkout.session.completed') {
+      return;
+    }
+
+    const session = await this.stripe.checkout.sessions.retrieve(
+      event.data.object.id
+    );
+
+    if (session.metadata?.productId) {
+      await this.productService.update(
+        parseInt(session.metadata.productId),
+        { sold: true }
+      )
+    }
+
+  }
 
 }
