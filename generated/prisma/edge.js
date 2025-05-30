@@ -130,7 +130,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "D:\\scion\\haul-be\\generated\\prisma",
+      "value": "/Users/scion/Documents/Projects/Haul_BE/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -139,12 +139,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "darwin-arm64",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "D:\\scion\\haul-be\\prisma\\schema.prisma",
+    "sourceFilePath": "/Users/scion/Documents/Projects/Haul_BE/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -162,7 +162,7 @@ const config = {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://postgres:postgres@localhost:5432/haul?schema=public"
+        "value": "postgresql://postgres:secretpassword@localhost:5431/haul?schema=public"
       }
     }
   },
